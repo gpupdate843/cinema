@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MovieRank - Социальная сеть для киноманов</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Загрузка -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loader"></div>
+        <p>Загрузка...</p>
+    </div>
+
+    <!-- Landing -->
+    <section class="hero" id="heroSection">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <h1>MovieRank</h1>
+            <p>Социальная сеть для киноманов</p>
+            <div class="quote-box">
+                <p id="quoteText">Кино — это жизнь, из которой вырезали скучные моменты.</p>
+                <span id="quoteAuthor">— Альфред Хичкок</span>
+            </div>
+            <div class="landing-buttons">
+                <button class="btn-enter" onclick="showAuthFromLanding('login')">Войти</button>
+                <button class="btn-enter btn-secondary" onclick="showAuthFromLanding('register')">Зарегистрироваться</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Приложение -->
+    <div class="app" id="appContainer">
+        <!-- Сайдбар -->
+        <nav class="sidebar" id="sidebar">
+            <div class="logo">
+                <i class="fas fa-film"></i>
+                <span>MovieRank</span>
+                <button class="close-sidebar" onclick="toggleSidebar()"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <div class="user-mini">
+                <img id="userAvatarImg" src="https://i.pravatar.cc/150?img=12" alt="">
+                <span id="userName">Гость</span>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="active" onclick="showPage('feed', this)"><i class="fas fa-home"></i> Лента</li>
+                <li onclick="showPage('movies', this)"><i class="fas fa-film"></i> Фильмы</li>
+                <li onclick="showPage('ratings', this)"><i class="fas fa-star"></i> Мои оценки</li>
+                <li onclick="showPage('lists', this)"><i class="fas fa-bookmark"></i> Списки</li>
+                <li onclick="showPage('friends', this)"><i class="fas fa-users"></i> Друзья</li>
+                <li onclick="showPage('top', this)"><i class="fas fa-trophy"></i> Топ</li>
+            </ul>
+            
+            <button class="btn-login" onclick="showAuthModal()" id="loginBtn">Войти</button>
+            <button class="btn-logout hidden" onclick="logout()" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Выйти</button>
+        </nav>
+        
+        <div class="overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+        <!-- Контент -->
+        <main class="main">
+            <header class="header">
+                <button class="menu-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+                <h2 id="pageTitle">Лента</h2>
+            </header>
+
+            <!-- Лента -->
+            <section class="page active" id="page-feed">
+                <div id="feedContent"></div>
+            </section>
+
+            <!-- Фильмы -->
+            <section class="page" id="page-movies">
+                <div class="carousel" id="nowPlayingCarousel"></div>
+                <h3>Популярные</h3>
+                <div class="movies-grid" id="popularMoviesGrid"></div>
+            </section>
+
+            <!-- Оценки -->
+            <section class="page" id="page-ratings">
+                <div class="stats-row">
+                    <div class="stat-box"><span id="totalWatched">0</span><p>Просмотрено</p></div>
+                    <div class="stat-box"><span id="avgUserRating">0</span><p>Средняя оценка</p></div>
+                    <div class="stat-box"><span id="totalFavorites">0</span><p>В избранном</p></div>
+                </div>
+                <div class="chart" id="ratingsChart"></div>
+                <h3>Ваши оценки</h3>
+                <div class="ratings-list" id="userRatingsList"></div>
+            </section>
+
+            <!-- Списки -->
+            <section class="page" id="page-lists">
+                <div class="lists-grid" id="userLists"></div>
+            </section>
+
+            <!-- Друзья -->
+            <section class="page" id="page-friends">
+                <div class="friends-list" id="friendsListContainer"></div>
+            </section>
+
+            <!-- Топ -->
+            <section class="page" id="page-top">
+                <div class="top-list" id="topMoviesList"></div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Модалка фильма -->
+    <div class="modal" id="movieDetailModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('movieDetailModal')"><i class="fas fa-times"></i></button>
+            <div class="movie-hero" id="movieDetailHero">
+                <img id="detailPosterImg" src="" alt="">
+                <div class="movie-info-box">
+                    <h2 id="detailTitle"></h2>
+                    <div class="meta" id="detailMeta"></div>
+                    <div class="actions">
+                        <button onclick="showRateModal()"><i class="fas fa-star"></i> Оценить</button>
+                        <button onclick="toggleFavorite(currentMovie.id)"><i class="fas fa-heart"></i></button>
+                        <button onclick="toggleWatchlist()"><i class="fas fa-bookmark"></i></button>
+                    </div>
+                </div>
+            </div>
+            <p id="detailDescription"></p>
+            <h4>В ролях</h4>
+            <div class="cast" id="detailCast"></div>
+        </div>
+    </div>
+
+    <!-- Модалка оценки -->
+    <div class="modal" id="rateModal">
+        <div class="modal-content small">
+            <h3>Ваша оценка</h3>
+            <div class="stars" id="rateStars">
+                <i class="far fa-star" data-rating="1"></i>
+                <i class="far fa-star" data-rating="2"></i>
+                <i class="far fa-star" data-rating="3"></i>
+                <i class="far fa-star" data-rating="4"></i>
+                <i class="far fa-star" data-rating="5"></i>
+                <i class="far fa-star" data-rating="6"></i>
+                <i class="far fa-star" data-rating="7"></i>
+                <i class="far fa-star" data-rating="8"></i>
+                <i class="far fa-star" data-rating="9"></i>
+                <i class="far fa-star" data-rating="10"></i>
+            </div>
+            <p id="rateValue">Нажмите на звезду</p>
+            <button class="btn-primary" onclick="submitRating()">Сохранить</button>
+        </div>
+    </div>
+
+    <!-- Авторизация -->
+    <div class="modal" id="authModal">
+        <div class="modal-content small auth-modal">
+            <div class="auth-tabs">
+                <button class="auth-tab active" onclick="switchAuthTab('login')" id="loginTab">Войти</button>
+                <button class="auth-tab" onclick="switchAuthTab('register')" id="registerTab">Зарегистрироваться</button>
+            </div>
+            
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <input type="email" id="loginEmail" placeholder="Email" required>
+                <input type="password" id="loginPassword" placeholder="Пароль" required>
+                <button type="submit" class="btn-primary">Войти</button>
+            </form>
+            
+            <form id="registerForm" class="hidden" onsubmit="handleRegister(event)">
+                <input type="text" id="registerName" placeholder="Имя пользователя" required>
+                <input type="email" id="registerEmail" placeholder="Email" required>
+                <input type="password" id="registerPassword" placeholder="Пароль" required>
+                <input type="password" id="registerPasswordConfirm" placeholder="Подтвердите пароль" required>
+                <button type="submit" class="btn-primary">Зарегистрироваться</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Уведомления -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>

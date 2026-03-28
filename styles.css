@@ -1,0 +1,1304 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #0a0a0a;
+    color: #fff;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Загрузка */
+.loading-screen {
+    position: fixed;
+    inset: 0;
+    background: #0a0a0a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.3s;
+}
+
+.loading-screen.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.loader {
+    width: 50px;
+    height: 50px;
+    border: 3px solid #333;
+    border-top-color: #e50914;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Landing */
+.hero {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
+    z-index: 100;
+    transition: opacity 0.5s;
+}
+
+.hero.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.hero-bg {
+    position: absolute;
+    inset: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="%23e50914" stroke-width="0.5" opacity="0.1"/></svg>') center/300px;
+    opacity: 0.5;
+}
+
+.hero-content {
+    text-align: center;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #fff 0%, #e50914 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero > p {
+    color: #888;
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+.quote-box {
+    background: rgba(255,255,255,0.05);
+    padding: 25px;
+    border-radius: 12px;
+    max-width: 500px;
+    margin: 0 auto 30px;
+    border-left: 3px solid #e50914;
+}
+
+.quote-box p {
+    font-size: 1.1rem;
+    font-style: italic;
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.quote-box span {
+    color: #e50914;
+    font-size: 0.9rem;
+}
+
+.btn-enter {
+    background: #e50914;
+    color: #fff;
+    border: none;
+    padding: 15px 40px;
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-enter:hover {
+    background: #ff0a16;
+    transform: translateY(-2px);
+}
+
+.btn-enter.btn-secondary {
+    background: transparent;
+    border: 2px solid #fff;
+}
+
+.btn-enter.btn-secondary:hover {
+    background: #fff;
+    color: #0a0a0a;
+}
+
+.landing-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Приложение */
+.app {
+    display: none;
+    min-height: 100vh;
+}
+
+/* Сайдбар */
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 260px;
+    height: 100vh;
+    background: #141414;
+    border-right: 1px solid #222;
+    z-index: 200;
+    padding: 20px;
+    overflow-y: auto;
+    transition: transform 0.3s;
+}
+
+.sidebar.active {
+    transform: translateX(0);
+}
+
+@media (max-width: 1024px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 25px;
+}
+
+.logo i {
+    color: #e50914;
+}
+
+.close-sidebar {
+    display: none;
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+@media (max-width: 1024px) {
+    .close-sidebar {
+        display: block;
+    }
+}
+
+.user-mini {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    margin-bottom: 25px;
+}
+
+.user-mini img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.nav-menu {
+    list-style: none;
+    margin-bottom: 25px;
+}
+
+.nav-menu li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #888;
+    transition: all 0.2s;
+    margin-bottom: 5px;
+}
+
+.nav-menu li:hover,
+.nav-menu li.active {
+    background: rgba(229,9,20,0.1);
+    color: #e50914;
+}
+
+.nav-menu i {
+    width: 20px;
+}
+
+.btn-login {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    border: 1px solid #e50914;
+    color: #e50914;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.btn-login:hover {
+    background: #e50914;
+    color: #fff;
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 150;
+}
+
+@media (max-width: 1024px) {
+    .overlay.active {
+        display: block;
+    }
+}
+
+/* Контент */
+.main {
+    margin-left: 260px;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+@media (max-width: 1024px) {
+    .main {
+        margin-left: 0;
+    }
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.3rem;
+    cursor: pointer;
+}
+
+@media (max-width: 1024px) {
+    .menu-btn {
+        display: block;
+    }
+}
+
+.header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+/* Страницы */
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+/* Карусель */
+.carousel {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+    scrollbar-width: thin;
+    scrollbar-color: #e50914 transparent;
+}
+
+.carousel::-webkit-scrollbar {
+    height: 6px;
+}
+
+.carousel::-webkit-scrollbar-thumb {
+    background: #e50914;
+    border-radius: 3px;
+}
+
+.carousel-item {
+    flex: 0 0 300px;
+    height: 170px;
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.carousel-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(transparent 30%, rgba(0,0,0,0.9));
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 15px;
+}
+
+.carousel-overlay h3 {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+}
+
+.carousel-overlay p {
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+/* Сетка фильмов */
+.movies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 20px;
+}
+
+.movie-card {
+    cursor: pointer;
+}
+
+.movie-poster-wrapper {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    aspect-ratio: 2/3;
+    margin-bottom: 10px;
+}
+
+.movie-poster {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+
+.movie-card:hover .movie-poster {
+    transform: scale(1.05);
+}
+
+.movie-rating-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #e50914;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.movie-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.movie-card:hover .movie-overlay {
+    opacity: 1;
+}
+
+.quick-action-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255,255,255,0.2);
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.quick-action-btn:hover {
+    background: #e50914;
+}
+
+.movie-info h4 {
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.movie-info p {
+    color: #888;
+    font-size: 0.85rem;
+}
+
+.user-rating {
+    color: #e50914 !important;
+    font-weight: 500;
+}
+
+/* Лента */
+.feed-item {
+    background: #141414;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: transform 0.2s;
+}
+
+.feed-item:hover {
+    transform: translateY(-2px);
+}
+
+.feed-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.feed-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #333;
+}
+
+.feed-header h4 {
+    font-size: 1rem;
+    margin-bottom: 2px;
+    font-weight: 600;
+}
+
+.feed-header span {
+    color: #888;
+    font-size: 0.85rem;
+}
+
+.feed-movie {
+    display: flex;
+    gap: 15px;
+    cursor: pointer;
+    padding: 15px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 12px;
+    margin-bottom: 15px;
+    transition: background 0.2s;
+}
+
+.feed-movie:hover {
+    background: rgba(255,255,255,0.06);
+}
+
+.feed-movie img {
+    width: 80px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.feed-movie h5 {
+    font-size: 1.05rem;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.feed-movie p {
+    color: #888;
+    font-size: 0.9rem;
+}
+
+/* Рецензия в ленте */
+.feed-review {
+    padding: 15px;
+    background: rgba(229, 9, 20, 0.05);
+    border-radius: 10px;
+    margin-bottom: 15px;
+    border-left: 3px solid #e50914;
+}
+
+.feed-review p {
+    color: #ddd;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    font-style: italic;
+}
+
+/* Профессиональная рецензия */
+.professional-review {
+    background: linear-gradient(135deg, rgba(229, 9, 20, 0.08) 0%, rgba(255, 193, 7, 0.05) 100%);
+    border-left: 3px solid #ffc107;
+    padding: 20px;
+}
+
+.professional-review .review-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #ffc107;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.professional-review p {
+    font-style: normal;
+    text-align: justify;
+}
+
+/* Бейдж критика */
+.critic-badge {
+    background: linear-gradient(135deg, #ffc107, #ff9800);
+    color: #000;
+    font-size: 0.7rem;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-left: 8px;
+}
+
+/* Секция комментариев */
+.comments-section {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #222;
+}
+
+.comments-list {
+    margin-bottom: 15px;
+}
+
+.comment {
+    display: flex;
+    gap: 12px;
+    padding: 12px;
+    background: rgba(255,255,255,0.02);
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.comment-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.comment-content {
+    flex: 1;
+}
+
+.comment-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+}
+
+.comment-author {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #fff;
+}
+
+.comment-time {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.comment p {
+    color: #bbb;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.no-comments {
+    color: #666;
+    text-align: center;
+    padding: 20px;
+    font-style: italic;
+}
+
+/* Форма комментария */
+.comment-form {
+    display: flex;
+    gap: 10px;
+}
+
+.comment-form input {
+    flex: 1;
+    padding: 12px 15px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid #333;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 0.95rem;
+}
+
+.comment-form input:focus {
+    outline: none;
+    border-color: #e50914;
+}
+
+.comment-form button {
+    width: 44px;
+    height: 44px;
+    background: #e50914;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.comment-form button:hover {
+    background: #ff0a16;
+    transform: scale(1.05);
+}
+
+/* Действия в ленте */
+.feed-actions {
+    display: flex;
+    gap: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #222;
+}
+
+.feed-action-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: rgba(255,255,255,0.05);
+    border: none;
+    border-radius: 8px;
+    color: #888;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.feed-action-btn:hover {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+}
+
+.feed-action-btn i {
+    font-size: 1rem;
+}
+
+.feed-action-btn.liked {
+    color: #e50914;
+}
+
+.feed-action-btn.liked i {
+    color: #e50914;
+}
+
+/* Статистика */
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.stat-box {
+    background: #141414;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.stat-box span {
+    display: block;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #e50914;
+    margin-bottom: 5px;
+}
+
+.stat-box p {
+    color: #888;
+    font-size: 0.9rem;
+}
+
+/* График */
+.chart {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 8px;
+    height: 150px;
+    margin-bottom: 25px;
+    padding: 20px;
+    background: #141414;
+    border-radius: 12px;
+}
+
+.chart-bar {
+    flex: 1;
+    max-width: 30px;
+    text-align: center;
+}
+
+.bar-fill {
+    background: #e50914;
+    border-radius: 4px 4px 0 0;
+    min-height: 5px;
+    transition: height 0.3s;
+}
+
+.chart-bar span {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.8rem;
+    color: #888;
+}
+
+/* Списки оценок */
+.ratings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.rating-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: #141414;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.rating-item:hover {
+    background: #1a1a1a;
+}
+
+.rating-item img {
+    width: 60px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.rating-item > div {
+    flex: 1;
+}
+
+.rating-item h4 {
+    font-size: 1rem;
+    margin-bottom: 4px;
+}
+
+.rating-item p {
+    color: #888;
+    font-size: 0.9rem;
+}
+
+.rating-score {
+    color: #e50914;
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+/* Списки */
+.lists-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+}
+
+.list-card {
+    background: #141414;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.list-card:hover {
+    background: #1a1a1a;
+}
+
+.list-card i {
+    font-size: 2rem;
+    color: #e50914;
+    margin-bottom: 15px;
+}
+
+.list-card h4 {
+    font-size: 1rem;
+    margin-bottom: 5px;
+}
+
+.list-card p {
+    color: #888;
+    font-size: 0.85rem;
+}
+
+.list-card.create {
+    border: 2px dashed #333;
+    background: transparent;
+}
+
+/* Друзья */
+.friends-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.friend-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: #141414;
+    border-radius: 10px;
+}
+
+.friend-item img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.friend-item > div {
+    flex: 1;
+}
+
+.friend-item h4 {
+    font-size: 1rem;
+    margin-bottom: 2px;
+}
+
+.friend-item p {
+    color: #888;
+    font-size: 0.9rem;
+}
+
+.friend-item button {
+    background: none;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    padding: 8px;
+}
+
+/* Топ */
+.top-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.top-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: #141414;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.top-rank {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.top-rank.top-1 { background: gold; color: #000; }
+.top-rank.top-2 { background: silver; color: #000; }
+.top-rank.top-3 { background: #cd7f32; color: #fff; }
+
+.top-item img {
+    width: 60px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.top-item > div {
+    flex: 1;
+}
+
+.top-item h4 {
+    font-size: 1rem;
+    margin-bottom: 4px;
+}
+
+.top-item p {
+    color: #888;
+}
+
+/* Модальные окна */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.9);
+    z-index: 500;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: #141414;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 700px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.modal-content.small {
+    max-width: 400px;
+    padding: 30px;
+}
+
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(0,0,0,0.5);
+    border: none;
+    color: #fff;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.movie-hero {
+    position: relative;
+    height: 400px;
+    background-size: cover;
+    background-position: center;
+}
+
+.movie-hero > img {
+    position: absolute;
+    left: 30px;
+    bottom: -50px;
+    width: 150px;
+    height: 225px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.movie-info-box {
+    position: absolute;
+    left: 200px;
+    bottom: 30px;
+    right: 30px;
+}
+
+.movie-info-box h2 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.meta {
+    display: flex;
+    gap: 15px;
+    color: #aaa;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.meta span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+}
+
+.actions button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.actions button:first-child {
+    background: #e50914;
+    color: #fff;
+}
+
+.actions button:not(:first-child) {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+}
+
+.modal-content > p {
+    padding: 70px 30px 20px;
+    line-height: 1.7;
+    color: #ccc;
+}
+
+.modal-content > h4 {
+    padding: 0 30px 15px;
+    font-size: 1.1rem;
+}
+
+.cast {
+    display: flex;
+    gap: 15px;
+    padding: 0 30px 30px;
+    overflow-x: auto;
+}
+
+.cast-member {
+    text-align: center;
+    min-width: 70px;
+}
+
+.cast-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #e50914;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 auto 8px;
+}
+
+.cast-member span {
+    font-size: 0.85rem;
+    color: #aaa;
+}
+
+/* Оценка */
+.stars {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 20px 0;
+    font-size: 1.5rem;
+}
+
+.stars i {
+    cursor: pointer;
+    color: #444;
+    transition: color 0.2s;
+}
+
+.stars i.active,
+.stars i:hover {
+    color: #e50914;
+}
+
+#rateValue {
+    text-align: center;
+    color: #888;
+    margin-bottom: 20px;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 12px;
+    background: #e50914;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* Формы */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+input {
+    padding: 12px 15px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid #333;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 1rem;
+}
+
+input:focus {
+    outline: none;
+    border-color: #e50914;
+}
+
+/* Скрытые элементы */
+.hidden {
+    display: none !important;
+}
+
+/* Авторизация - вкладки */
+.auth-modal {
+    padding: 0 !important;
+}
+
+.auth-tabs {
+    display: flex;
+    border-bottom: 1px solid #333;
+}
+
+.auth-tab {
+    flex: 1;
+    padding: 15px;
+    background: transparent;
+    border: none;
+    color: #888;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.auth-tab:hover {
+    color: #fff;
+}
+
+.auth-tab.active {
+    color: #e50914;
+    border-bottom: 2px solid #e50914;
+}
+
+#loginForm,
+#registerForm {
+    padding: 25px;
+}
+
+/* Кнопка выхода */
+.btn-logout {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    border: 1px solid #666;
+    color: #888;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+    margin-top: 10px;
+}
+
+.btn-logout:hover {
+    background: rgba(229,9,20,0.1);
+    border-color: #e50914;
+    color: #e50914;
+}
+
+/* Уведомления */
+.toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.toast {
+    background: #141414;
+    border-left: 3px solid #e50914;
+    padding: 15px 20px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: slideIn 0.3s;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100px);
+        opacity: 0;
+    }
+}
+
+.toast.success { border-color: #4caf50; }
+.toast.error { border-color: #f44336; }
+
+.empty {
+    text-align: center;
+    color: #666;
+    padding: 40px;
+}
